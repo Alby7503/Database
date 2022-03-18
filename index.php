@@ -33,8 +33,8 @@ require_once "Utility.php";
                         echo "<li class=\"list-group-item\">" . $column["Field"] . "</li>";
                     }
                     echo "</ul>
-                    <div class=\"form-group\">
-                        <a href=\"Interact.php?table=$table&action=add\" class=\"btn btn-primary\">Aggiungi</a>
+                    <div class=\"form-group text-center\" style=\"margin: 5% 0 5% 0\">
+                        <a href=\"Add.php?table=$table\" class=\"btn btn-primary\">Aggiungi</a>
                         <a href=\"Interact.php?table=$table&action=drop\" class=\"btn btn-danger\">Elimina</a>
                     </div></div>";
                 }
