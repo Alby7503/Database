@@ -1,9 +1,7 @@
 <?php
 $table = $_GET["table"] ?? null;
-if (is_null($table) or empty($table)) {
-    die("Tabella non specificata");
-}
 require_once "Utility.php";
+checkTable($table);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fields = getFields($table);
     $sql = "INSERT INTO $table (";
@@ -19,16 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($fields as $field) {
         array_push($params, $_POST[$field['name']]);
     }
-    $result = query($sql, $params);
-    var_dump($params);
-    var_dump($sql);
-    var_dump($result);
-    if ($result === true) {
-        echo "Inserimento avvenuto con successo";
-    } else {
-        echo "Errore nell'inserimento";
-    }
-    die();
+    $result = bindQuery($sql, $params);
 }
 ?>
 <!DOCTYPE html>
@@ -46,23 +35,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="container">
         <h1 class="text-center">Aggiungi alla tabella <b><?php echo $table; ?></b></h1>
         <form method="POST">
-        <?php
-        //$sql = "SHOW COLUMNS FROM $table";
-        $fields = getFields($table);
-        foreach ($fields as $key => $field) {
-            $fieldName = $field["name"];
-            $fieldType = $field["type"];
-            $fieldType = explode("(", $fieldType)[0];
-            $fieldType = strtolower($fieldType);
-            echo "<div class=\"form-group\">
+            <?php
+            $fields = getFields($table);
+            foreach ($fields as $key => $field) {
+                $fieldName = $field["name"];
+                $fieldType = $field["type"];
+                $fieldType = explode("(", $fieldType)[0];
+                $fieldType = strtolower($fieldType);
+                echo "<div class=\"form-group\">
                 <label for=\"$fieldName\">$fieldName ($fieldType)</label>
-                <input type=\"$fieldType\" class=\"form-control\" id=\"$fieldName\">
+                <input type=\"$fieldType\" class=\"form-control\" id=\"$fieldName\" name=\"$fieldName\">
             </div>";
-        }
-        ?><br>
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">Aggiungi</button>
-        </div>
+            }
+            ?><br>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Aggiungi</button>
+            </div>
         </form>
     </div>
 </body>
