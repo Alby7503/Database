@@ -4,12 +4,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $table = $_POST["table"] ?? null;
     checkTable($table, true);
     $pk = $_POST["pk"] ?? null;
-    if (!checkValid($pk)) {
-        die("Chiave primaria non valida");
+    $field_count = $_POST["field_count"] ?? null;
+    if (!checkValid($pk) or !checkValid($field_count)) {
+        die("Campi non validi");
     }
-    $sql = 'CREATE TABLE ? (? INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ';
-    var_dump($_POST);
-    $field_case 
+    $params = [$table, $pk];
+    for ($i=0; $i < $field_count; $i++) { 
+        $param = $_POST["field$i"] ?? null;
+        $type = $_POST["type$i"] ?? null;
+        if (checkValid($param) and checkValid($type)) {
+            array_push($params, $param, $type);
+        }
+    }
+    var_dump($params);
+    #$sql = 'CREATE TABLE ? (? INT NOT NULL AUTO_INCREMENT PRIMARY KEY,';
+    #for ($i=2; $i < count($params); $i++) {
+    #    $sql .= '? ?'
+    #var_dump($_POST);
 }
 ?>
 <!DOCTYPE html>
@@ -43,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input class="form-control" type="text" name="field{{number}}" placeholder="Nome Campo">
                         </div>
                         <div class="col">
-                            <select class="form-control">
+                            <select class="form-control" name="type{{number}}">
                                 <option value="INTEGER">INTEGER</option>
                                 <option value="TEXT">TEXT</option>
                             </select>
@@ -54,11 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <br>
             <button type="button" class="btn btn-info" onclick="addField()">Aggiungi campo</button>
             <br><br>
-            <button class="btn btn-primary">Crea tabella</button>
+            <input type="submit" class="btn btn-primary">Crea tabella</button>
         </form>
-
     </div>
-
     <script>
         var fields = [];
         let field = document.getElementsByTagName("template")[0];
