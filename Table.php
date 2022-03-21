@@ -7,6 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!checkValid($pk)) {
         die("Chiave primaria non valida");
     }
+    $sql = 'CREATE TABLE ? (? INT NOT NULL AUTO_INCREMENT PRIMARY KEY, ';
+    var_dump($_POST);
+    $field_case 
 }
 ?>
 <!DOCTYPE html>
@@ -26,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <form method="POST">
             <input class="form-control" type="text" name="table" placeholder="Table Name"><br>
             <input class="form-control" type="text" name="pk" placeholder="Primary Key"><br>
+            <input type="hidden" id="field_count" name="field_count" value="0">
             <h2 class="text-primary">Aggiungi campi</h2><br>
             <span id="fields">
                 <template>
@@ -50,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <br>
             <button type="button" class="btn btn-info" onclick="addField()">Aggiungi campo</button>
             <br><br>
-            <button class="btn btn-primary" onclick="createTable()">Crea tabella</button>
+            <button class="btn btn-primary">Crea tabella</button>
         </form>
 
     </div>
@@ -59,16 +63,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         var fields = [];
         let field = document.getElementsByTagName("template")[0];
         const fieldsContainer = document.getElementById("fields");
+        const fieldCount = document.getElementById("field_count");
 
         function addField() {
             let newField = field.content.cloneNode(true);
+            newField.querySelector("input").name = "field" + fields.length;
             fieldsContainer.appendChild(newField);
             fields.push(newField);
+            fieldCount.value = fields.length;
         }
 
         function removeField(button) {
             button.parentElement.parentElement.parentElement.remove();
             fields.splice(fields.indexOf(button.parentElement.parentElement), 1);
+            fieldCount.value = fields.length;
         }
 
         addField();
