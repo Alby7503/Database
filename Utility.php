@@ -85,11 +85,12 @@ function getFields($table)
 
 function getTables()
 {
+    global $dbname;
     $sql = "SHOW TABLES";
     $result = query($sql);
     $tables = [];
     while ($row = $result->fetch_assoc()) {
-        $tables[] = $row["Tables_in_custom"];
+        $tables[] = $row["Tables_in_$dbname"];
     }
     return $tables;
 }
@@ -97,7 +98,6 @@ function getTables()
 function bindQuery($sql, $params = [])
 {
     $conn = connect();
-    var_dump($sql);
     $stmt = $conn->prepare($sql);
     $types = '';
     $bindings = [

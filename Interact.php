@@ -13,7 +13,6 @@ switch ($action) {
     case 'drop':
         $sql = "DROP TABLE $table";
         $result = query($sql);
-        echo var_dump($result);
         header("Location: index.php");
         break;
     default:

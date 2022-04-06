@@ -1,26 +1,33 @@
 <?php
 require_once "Utility.php";
+$allowed_types = ['int', 'text'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $table = $_POST["table"] ?? null;
     checkTable($table, true);
     $pk = $_POST["pk"] ?? null;
     $field_count = $_POST["field_count"] ?? null;
     if (!checkValid($pk) or !checkValid($field_count)) {
-        die("Campi non validi");
+        die("Campo non valido: $pk");
     }
-    $params = [$table, $pk];
-    for ($i=0; $i < $field_count; $i++) { 
+    $params = [];
+    for ($i = 0; $i < $field_count; $i++) {
         $param = $_POST["field$i"] ?? null;
         $type = $_POST["type$i"] ?? null;
-        if (checkValid($param) and checkValid($type)) {
+        if (checkValid($param) and checkValid($type) and ctype_alpha($param) and in_array(strtolower($type), $allowed_types)) {
             array_push($params, $param, $type);
+        } else {
+            die("Campo non valido: $param");
         }
     }
-    var_dump($params);
-    #$sql = 'CREATE TABLE ? (? INT NOT NULL AUTO_INCREMENT PRIMARY KEY,';
-    #for ($i=2; $i < count($params); $i++) {
-    #    $sql .= '? ?'
-    #var_dump($_POST);
+    $sql = "CREATE TABLE $table($pk INT NOT NULL AUTO_INCREMENT PRIMARY KEY";
+    $params_count = count($params);
+    if ($params_count / 2 > 0) {
+        for ($i = 0; $i < $params_count; $i += 2) {
+            $sql .= ', ' . $params[$i] . ' ' . $params[$i + 1];
+        }
+    }
+    $sql .= ')';
+    query($sql);
 }
 ?>
 <!DOCTYPE html>
@@ -55,8 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                         <div class="col">
                             <select class="form-control" name="type{{number}}">
-                                <option value="INTEGER">INTEGER</option>
-                                <option value="TEXT">TEXT</option>
+                                <?php
+                                foreach ($allowed_types as $allowed_type)
+                                    echo "<option value='$allowed_type'>$allowed_type</option>";
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -65,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <br>
             <button type="button" class="btn btn-info" onclick="addField()">Aggiungi campo</button>
             <br><br>
-            <input type="submit" class="btn btn-primary">Crea tabella</button>
+            <input type="submit" class="btn btn-primary" value="Crea tabella"></button>
         </form>
     </div>
     <script>
@@ -77,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         function addField() {
             let newField = field.content.cloneNode(true);
             newField.querySelector("input").name = "field" + fields.length;
+            newField.querySelector("select").name = "type" + fields.length;
             fieldsContainer.appendChild(newField);
             fields.push(newField);
             fieldCount.value = fields.length;
