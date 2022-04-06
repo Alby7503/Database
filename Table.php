@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     for ($i = 0; $i < $field_count; $i++) {
         $param = $_POST["field$i"] ?? null;
         $type = $_POST["type$i"] ?? null;
-        if (checkValid($param) and checkValid($type) and ctype_alpha($param) and in_array(strtolower($type), $allowed_types)) {
+        if (checkValid($param) and checkValid($type) and ctype_alpha($param) and in_array($type, $allowed_types)) {
             array_push($params, $param, $type);
         } else {
             die("Campo non valido: $param");
