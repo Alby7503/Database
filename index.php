@@ -39,11 +39,14 @@ require_once "Utility.php";
                         echo "<li class=\"list-group-item\">" . $column["Field"] . "</li>";
                     }
                     echo "</ul>
-                    <div class=\"form-group text-center\" style=\"margin: 5% 0 5% 0\">
-                        <a href=\"Add.php?table=$table\" class=\"btn btn-primary\">Aggiungi</a>
-                        <a href=\"View.php?table=$table\" class=\"btn btn-success\">Visualizza</a>
-                        <a href=\"Interact.php?table=$table&action=drop\" class=\"btn btn-danger\">Elimina</a>
-                    </div></div>";
+                    <div class=\"form-group\" style=\"margin: 5% 0 5% 0\">
+                    <div class=\"row d-flex justify-content-center text-center\">
+                        <a href=\"Add.php?table=$table\" class=\"btn btn-primary col-md-5\">Aggiungi</a>
+                        <a href=\"View.php?table=$table\" class=\"btn btn-success col-md-5\">Visualizza</a>
+                        </div><div class=\"row d-flex justify-content-center text-center\">
+                        <a href=\"Search.php?table=$table\" class=\"btn btn-info col-md-5\">Cerca</a>
+                        <a href=\"Interact.php?table=$table&action=drop\" class=\"btn btn-danger col-md-5\">Elimina</a>
+                    </div></div></div>";
                 }
             }
             ?>

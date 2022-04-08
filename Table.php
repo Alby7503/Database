@@ -27,7 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     $sql .= ')';
-    query($sql);
+    if (query($sql)) {
+        header("Location: index.php");
+    }
 }
 ?>
 <!DOCTYPE html>

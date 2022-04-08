@@ -3,7 +3,7 @@ $table = $_GET["table"] ?? null;
 require_once "Utility.php";
 checkTable($table);
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $fields = getFields($table);
+    $fields = getColumns($table);
     $sql = "INSERT INTO $table (";
     foreach ($fields as $key => $field) {
         $sql .= $field['name'] . ', ';
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h1 class="text-center">Aggiungi alla tabella <b><?php echo $table; ?></b></h1>
         <form method="POST">
             <?php
-            $fields = getFields($table);
+            $fields = getColumns($table);
             foreach ($fields as $key => $field) {
                 $fieldName = $field["name"];
                 $fieldType = $field["type"];
@@ -54,4 +54,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
     </div>
 </body>
+
 </html>

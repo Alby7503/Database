@@ -22,7 +22,7 @@ checkTable($table);
                 <tr>
                     <th></th>
                     <?php
-                    $fields = getFields($table);
+                    $fields = getColumns($table);
                     foreach ($fields as $key => $field) {
                         $fieldName = $field["name"];
                         echo "<th>$fieldName</th>";

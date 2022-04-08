@@ -7,9 +7,6 @@ if (is_null($action) or empty($action)) {
     die("Azione non specificata");
 }
 switch ($action) {
-    case 'add':
-        echo '<iframe frameborder="0" src="Add.php?table=' . $table . '" width="100%" height="100%"></iframe>';
-        break;
     case 'drop':
         $sql = "DROP TABLE $table";
         $result = query($sql);

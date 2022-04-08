@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+#error_reporting(0);
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -53,6 +53,20 @@ function checkTable($table, $simple = false)
     die("Tabella non valida");
 }
 
+function checkColumn($table, $column)
+{
+    if (!checkValid($column)) {
+        goto end;
+    }
+    $columns = getColumns($table);
+    if (!in_array($column, array_column($columns, 'name'))) {
+        goto end;
+    }
+    return;
+    end:
+    die("Colonna non valida");
+}
+
 function getPrimaryKey($table)
 {
     $sql = "SHOW KEYS FROM $table WHERE Key_name = 'PRIMARY'";
@@ -70,7 +84,7 @@ function bootstrap()
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>';
 }
 
-function getFields($table)
+function getColumns($table)
 {
     $sql = "SHOW COLUMNS FROM $table";
     $result = query($sql);
