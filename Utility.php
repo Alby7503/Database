@@ -1,11 +1,13 @@
 <?php
-#error_reporting(0);
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "custom";
+error_reporting(0);
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'custom';
 
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+#$path = 'Database';
+
+#mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 function connect()
 {
@@ -131,4 +133,14 @@ function bindQuery($sql, $params = [])
     $stmt->close();
     $conn->close();
     return $result;
+}
+
+function overrideBack()
+{
+    echo "<script type='text/javascript'>
+            history.pushState(null, null, '');
+            window.addEventListener('popstate', function(event) {
+                window.location.assign('index.php');
+            });
+        </script>";
 }

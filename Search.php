@@ -1,4 +1,7 @@
 <?php
+
+use function PHPSTORM_META\override;
+
 require_once "Utility.php";
 $table = $_GET["table"] ?? null;
 checkTable($table);
@@ -16,6 +19,7 @@ checkTable($table);
 
 <body>
     <div class="container">
+        <h1 class="text-primary">Cerca</h1>
         <form method="POST">
             <input type="hidden" name="table" value="<?php echo $table; ?>">
             <div class="form-group">
@@ -66,6 +70,7 @@ checkTable($table);
         }
         ?>
     </div>
+    <?php overrideBack() ?>
 </body>
 
 </html>

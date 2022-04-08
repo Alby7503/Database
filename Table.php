@@ -102,6 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         addField();
     </script>
+    <?php overrideBack() ?>
 </body>
 
 </html>
